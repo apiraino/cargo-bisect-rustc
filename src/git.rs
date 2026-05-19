@@ -7,13 +7,13 @@ use std::env;
 use std::ops::Deref;
 use std::path::Path;
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use chrono::{TimeZone, Utc};
 use git2::build::RepoBuilder;
 use git2::{Commit as Git2Commit, Repository};
 use log::debug;
 
-use crate::{Author, Commit, GitDate, BORS_AUTHORS};
+use crate::{Author, BORS_AUTHORS, Commit, GitDate};
 
 impl Commit {
     // Takes &mut because libgit2 internally caches summaries

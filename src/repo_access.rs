@@ -1,6 +1,6 @@
 use anyhow::Context;
 
-use crate::{git, github, Bound, Commit, GitDate};
+use crate::{Bound, Commit, GitDate, git, github};
 
 pub(crate) trait RustRepositoryAccessor {
     /// Maps `bound` to its associated date, looking up its commit if necessary.
