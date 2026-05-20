@@ -353,7 +353,9 @@ impl Toolchain {
                 if status.code() == Some(124) {
                     match cfg.args.timeout {
                         Some(_) => break TestOutcome::Regressed,
-                        None => panic!("Process timed out but no timeout was specified. Please check host configuration for timeouts and try again.")
+                        None => panic!(
+                            "Process timed out but no timeout was specified. Please check host configuration for timeouts and try again."
+                        ),
                     }
                 }
 

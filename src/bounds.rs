@@ -1,11 +1,11 @@
 //! Definitions of bisection bounds.
 
-use crate::toolchains::{
-    download_progress, parse_to_naive_date, Toolchain, NIGHTLY_SERVER, YYYY_MM_DD,
-};
 use crate::GitDate;
 use crate::Opts;
-use crate::{today, EPOCH_COMMIT};
+use crate::toolchains::{
+    NIGHTLY_SERVER, Toolchain, YYYY_MM_DD, download_progress, parse_to_naive_date,
+};
+use crate::{EPOCH_COMMIT, today};
 use anyhow::bail;
 use chrono::NaiveDate;
 use reqwest::blocking::Client;

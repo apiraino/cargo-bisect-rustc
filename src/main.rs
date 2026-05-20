@@ -11,7 +11,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process;
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use chrono::{Duration, NaiveDate, Utc};
 use clap::{ArgAction, Parser, ValueEnum};
 use colored::Colorize;
@@ -29,11 +29,11 @@ mod toolchains;
 
 use crate::bounds::{Bound, Bounds};
 use crate::github::get_commit;
-use crate::least_satisfying::{least_satisfying, Satisfies};
+use crate::least_satisfying::{Satisfies, least_satisfying};
 use crate::repo_access::{AccessViaGithub, AccessViaLocalGit, RustRepositoryAccessor};
 use crate::toolchains::{
-    parse_to_naive_date, DownloadError, DownloadParams, InstallError, TestOutcome, Toolchain,
-    ToolchainSpec, YYYY_MM_DD,
+    DownloadError, DownloadParams, InstallError, TestOutcome, Toolchain, ToolchainSpec, YYYY_MM_DD,
+    parse_to_naive_date,
 };
 
 /// Git usernames used by bors.
@@ -468,7 +468,9 @@ impl Config {
                 )
                 .red()
                 .bold();
-                eprintln!("Regression in {url}. Note that if it is a legacy rollup build, it might be available in {legacy_url}.");
+                eprintln!(
+                    "Regression in {url}. Note that if it is a legacy rollup build, it might be available in {legacy_url}."
+                );
 
                 // In case the bisected commit has been garbage-collected by github, we show its
                 // additional context here.

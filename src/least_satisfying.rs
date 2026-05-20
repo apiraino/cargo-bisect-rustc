@@ -79,7 +79,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::Satisfies::{No, Unknown, Yes};
-    use super::{least_satisfying, Satisfies};
+    use super::{Satisfies, least_satisfying};
     use quickcheck::{QuickCheck, TestResult};
 
     fn prop(xs: Vec<Option<bool>>) -> TestResult {
