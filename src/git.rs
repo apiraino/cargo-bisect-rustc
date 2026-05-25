@@ -118,13 +118,22 @@ fn get_repo() -> anyhow::Result<RustcRepo> {
 fn find_origin_remote(repo: &Repository) -> anyhow::Result<String> {
     repo.remotes()?
         .iter()
-        .filter_map(|name| name.and_then(|name| repo.find_remote(name).ok()))
+        .map(|name| {
+            repo.find_remote(name.expect("name is utf-8").expect("name exists"))
+                .expect("remote exists")
+        })
         .find(|remote| {
             remote
                 .url()
                 .map_or(false, |url| url.contains("rust-lang/rust"))
         })
-        .and_then(|remote| remote.name().map(std::string::ToString::to_string))
+        .map(|remote| {
+            remote
+                .name()
+                .expect("name is utf8")
+                .expect("remote exists")
+                .to_string()
+        })
         .with_context(|| {
             format!(
                 "rust-lang/rust remote not found. \
@@ -152,14 +161,13 @@ pub fn get_commits_between(first_commit: &str, last_commit: &str) -> anyhow::Res
     // Sanity check -- our algorithm below only works reliably if the
     // two commits are merge commits made by bors
     let assert_by_bors = |c: &Git2Commit<'_>| -> anyhow::Result<()> {
-        match c.author().name() {
-            Some(author) if BORS_AUTHORS.contains(&author) => Ok(()),
-            Some(author) => bail!(
+        match c.author().name().expect("name is utf-8") {
+            author if BORS_AUTHORS.contains(&author) => Ok(()),
+            author => bail!(
                 "Expected author {author} to be one of {BORS_AUTHORS:?} for {}.\n \
                 Make sure specified commits are on the default branch!",
                 c.id()
             ),
-            None => bail!("No author for {}", c.id()),
         }
     };
 
